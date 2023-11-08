@@ -1,5 +1,10 @@
 from django.db import models
 from  django.utils import timezone
+#adding many to many relationship
+from django.contrib.auth.models import User
+#We have imported the User model from the django
+# .contrib.auth.models module and we have added
+# an author field to the Post model.
 
 # Create your models here.
 class  Post(models.Model):
@@ -20,6 +25,9 @@ class  Post(models.Model):
     updated  = models.DateTimeField(auto_now=True)
     #sadding status field
     status  =  models.CharField(max_length=2, choices=Status.choices,default=Status.DRAFT)
+    author  =  models.ForeignKey(User,on_delete=models.CASCADE, related_name='blog_posts')
+    #many to many relationship a user can  create any number of posts
+    
     
     
     
