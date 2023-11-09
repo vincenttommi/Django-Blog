@@ -1,8 +1,22 @@
 from django.db import models
+from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.contrib.auth.models import User
 #importing user
 # Create your models here.
+
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Post.Status.PUBLISHED)
+#This manager retrieves all the  objects from database
+
+
+
+
+
+
 class  Post(models.Model):
     
     class Status(models.TextChoices):
@@ -30,6 +44,8 @@ class  Post(models.Model):
      
 #Defining  a defualt sort order that arrranges post in a chronolgical order
     status  = models.CharField(max_length=2,choices=Status.choices, default=Status.DRAFT)
+    objects  = models.Manager()  #The default manager
+    published =  PublishedManager() #my custom manager
 
     class Meta:
         ordering  = ['-publish']
