@@ -5,7 +5,7 @@ class  Post(models.Model):
     title  = models.CharField(max_length=250)
     slug  = models.SlugField(max_length=250)
     body  =  models.TextField()
-    publish  =  models.DateTimeField(default=timezone)
+    publish  =  models.DateTimeField(default=timezone.now)
     #publish: This is a DateTimeField field that translates 
     # into a DATETIME column in the SQL database
     created  =  models.DateTimeField(auto_now_add=True)
@@ -14,10 +14,12 @@ class  Post(models.Model):
     updated =  models.DateTimeField(auto_now=True)
 #updated: This is a DateTimeField field. We will use it to store the last date and time when the
  #post was updated. By using auto_now, the date will be updated automatically when saving an object.
-    
+     
+#Defining  a defualt sort order that arrranges post in a chronolgical order
 
- 
-
+    class Meta:
+        ordering  = ['-publish']
+            
     
     
     
