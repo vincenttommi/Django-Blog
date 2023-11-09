@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+import sys
+print(sys.path)
 
 
 class BlogConfig(AppConfig):
