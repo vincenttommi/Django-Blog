@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_list_or_404
 from .models import Post
 from djang.http import Http404
 
@@ -14,11 +14,9 @@ def  post_list(request):
 #create a view to  return a single post
 
 def post_detail(request,id):
-    try:
-        post =  Post.published.get(id=id)
-    except Post.DoesNotExist:
-        raise Http404("No Post found.")
     
-    return render(request, 'blog/post/detail.html',{'post':post})    
+        post =  get_list_or_404(Post,id=id,status=Post.Status.PUBLISHED)
+       #In the detail view, we now use the get_object_or_404() shortcut to retrieve the desired post
+        return render(request, 'blog/post/detail.html',{'post':post})    
         
         
