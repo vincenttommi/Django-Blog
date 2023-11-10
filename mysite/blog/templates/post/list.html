@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+{% block title %}My Blog{% endblock %}
+{% block content %}
+    <h1>My Blog</h1>
+    {% for post in posts %}
+        {# Looping through posts using a for loop in Django #}
+        <h2>
+            <a href="{% url 'blog:post_detail' post.id %}">
+                {{ post.title }}
+            </a>
+        </h2>
+
+        <p class="date">
+            Published {{ post.publish }} by {{ post.author }}
+        </p>
+        {{ post.body|truncatewords:30|linebreaks }}
+    {% endfor %}
+{% endblock %}
+
+
+{% comment %} With the {% extends %} template tag, you tell Django to inherit from the blog/base.html template.
+Then, you fill the title and content blocks of the base template with content. You iterate through
+the posts and display their title, date, author, and body, including a link in the title to the detail URL
+of the post. We build the URL using the {% url %} template tag provided by Django. {% endcomment %}

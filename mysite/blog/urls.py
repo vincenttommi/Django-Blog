@@ -4,7 +4,7 @@ from .import views
 
 
 app_name  = 'blog'
-
+#helps to  organize  URLs  by application and use name when referring to them
 
 
 
