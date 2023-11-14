@@ -25,7 +25,9 @@ class  Post(models.Model):
         PUBLISHED  = 'PB','Published'
       
     title  = models.CharField(max_length=250)
-    slug  = models.SlugField(max_length=250)
+    slug  = models.SlugField(max_length=250, unique_for_date='publish')
+#By using unique_for_date, the slug field is now required to be unique for the date stored in the
+# publish field.
     author  = models.ForeignKey(User, on_delete=models.CASCADE,related_name='blog_posts')
     #We have imported the User model from the django.contrib.auth.models module and we have added
   #an author field to the Post model. This field defines a many-to-one relationship, meaning that each

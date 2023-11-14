@@ -13,10 +13,16 @@ def  post_list(request):
 
 #create a view to  return a single post
 
-def post_detail(request,id):
+def post_detail(request, year, month, day, post):
     
-        post =  get_list_or_404(Post,id=id,status=Post.Status.PUBLISHED)
+        post =  get_list_or_404(Post,status=Post.Status.PUBLISHED,slug=post,publish__year=year,publish__month=month,publish__day=day)
        #In the detail view, we now use the get_object_or_404() shortcut to retrieve the desired post
-        return render(request, 'post/detail.html',{'post':post})    
+        return render(request, 'blog/post/detail.html',{'post':post})  
+    
+    
+    
+
+    
+      
         
         
