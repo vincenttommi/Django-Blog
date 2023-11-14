@@ -3,7 +3,10 @@ from .models import Post
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage,\
  PageNotAnInteger
-from  django.views.generic import ListView
+# from  django.views.generic import ListView
+from .forms  import  EmailPostForm
+#importing class of the form to our function
+
 # In this view, we retrieve all the posts with 
 # the PUBLISHED status using the published manager that we created previously
 def post_list(request):
@@ -46,3 +49,31 @@ def post_detail(request, year, month, day, post):
 #     template_name  = '/post/list.html'
     
 # we have implemented a class-based view that inherits from the ListView class    
+
+
+
+def  post_share(request, post_id):
+    #Retrieving  post by id
+    
+    post  = get_list_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+# We have defined the post_share view that takes the request object and the post_id variable as pa-
+ #  rameters. We use the get_object_or_404() shortcut to retrieve a published post by its id.
+    if request.method == 'POST':
+        #Form  was submitted 
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            #Form fields passed  validation
+            cd = form.cleaned_data
+            #send email
+            
+            
+    else:
+        form = EmailPostForm()
+        
+        #when  page is loaded for the first time,the view is receives a GET request
+        #in this case a  new EmailPostForm is created and stored in form variable
+        return render(request, 'post/share.html',{'post':post,'form':'form'})
+    
+
+    
+            
