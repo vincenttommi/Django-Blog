@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_list_or_404
 from .models import Post
 from django.http import Http404
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage,\
+ PageNotAnInteger
 
 # In this view, we retrieve all the posts with 
 # the PUBLISHED status using the published manager that we created previously
@@ -16,8 +17,12 @@ def post_list(request):
     # the EmptyPage exception when retrieving a page
     try:
         posts = paginator.page(page_number)
-    except EmptyPage:
+    except  PageNotAnInteger:
         # If page_number is out of range, deliver the last page of results 
+        posts = paginator.page(1)
+        
+    except EmptyPage:   
+        # if page_number is out of range deliver  last page  of results
         posts = paginator.page(paginator.num_pages)
 
     return render(request, 'post/list.html', {'posts': posts})
