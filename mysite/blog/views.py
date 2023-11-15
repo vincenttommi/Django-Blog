@@ -6,6 +6,16 @@ from django.core.paginator import Paginator, EmptyPage,\
 # from  django.views.generic import ListView
 from .forms  import  EmailPostForm
 #importing class of the form to our function
+from django.core.mail  import  send_mail
+#importing mail from django.core.mail
+
+
+
+
+
+
+
+
 
 # In this view, we retrieve all the posts with 
 # the PUBLISHED status using the published manager that we created previously
@@ -64,7 +74,22 @@ def  post_share(request, post_id):
         if form.is_valid():
             #Form fields passed  validation
             cd = form.cleaned_data
+            
             #send email
+            post_url  = request.build_absolute_uri(post.get_absolute_url())
+            #this code generates an absolute URL for a specific Post within context of webrequest
+            
+            subject  = f"{cd['name']} recommends you read" \
+                f"{post.title}"
+            
+            message =  f"Read{post.title} at {post_url}\n\n"\
+                f"{cd['name']}\'s comments:{cd['comments']}"
+             
+            send_mail(subject, message, 'vincenttommi@gmail.com',
+            [cd['to']])        
+                
+                
+            sent  = True
             
             
     else:
@@ -72,8 +97,8 @@ def  post_share(request, post_id):
         
         #when  page is loaded for the first time,the view is receives a GET request
         #in this case a  new EmailPostForm is created and stored in form variable
-        return render(request, 'post/share.html',{'post':post,'form':'form'})
+        return render(request, 'post/share.html',{'post':post,'form':'form', 'sent':sent})
+    
     
 
     
-            
