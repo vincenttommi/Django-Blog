@@ -1,14 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post,Comment
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage,\
  PageNotAnInteger
 # from  django.views.generic import ListView
-from .forms  import  EmailPostForm
+from .forms  import  EmailPostForm,CommentForm
 #importing class of the form to our function
 from django.core.mail  import  send_mail
 from django.views.generic import ListView
 #importing mail from django.core.mail
+from django.views.decorators.http import require_POST
+
+
+
+
+
 
 
 
@@ -100,6 +106,42 @@ def post_share(request, post_id):
     # When the page is loaded for the first time, the view receives a GET request.
     # In this case, a new EmailPostForm is created and stored in the form variable.
     return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent})
+
+
+
+
+
+
+@require_POST
+def post_comment(request, post_id):
+    post  = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    comment  = None
+    
+    
+    #A  comment was posted
+    
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        #create a Comment  object without saving it  to  database
+        comment  =  form.save(commit=False)
+        #Assign the  post to the comment
+        comment.post = post
+        #Save the comment to the database
+        comment.save()
+    return  render(request,'blog/post/comment.html',{'post':post,'form':form,'comment':comment})
+  
+#We have defined the post_comment view that takes the request object and the post_id variable as
+# parameters
+#This View is used to manage POST submission
+
+
+#1  we retrieve a published post by  it's  is using get_object_or_404 
+#2 we  define  a comment variable with  initial value  None
+#3 We instantiate form using submitted  POST data  and validate it using is_valid()
+#4 if form is valid  we create a  new comment object by calling forms's save() method
+#and assign it  new_comment varaile
+#5  save() method  create  an instance  of the  model form
+
 
 
 
