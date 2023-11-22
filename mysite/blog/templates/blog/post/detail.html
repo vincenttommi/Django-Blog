@@ -10,5 +10,11 @@
     <a href="{% url "blog:post_share" post.id %}">
         Share this post
     </a>
+    {% comment %} counting comments {% endcomment %}
    </p>
+{%  with comments.count as total_comments %}   
+    <h2>
+       {{ total_comments}} comment{{ total_comments|pluralize}}
+    </h2>
+    {% endwith %} 
 {% endblock %}
