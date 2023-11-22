@@ -1,6 +1,6 @@
 from  django import  forms
 # Form: Allows you to build standard forms by defining fields and validations
-
+from .models import Comment
 
 class EmailPostForm(forms.Form):
     name =  forms.CharField(max_length=25)
@@ -13,3 +13,10 @@ class EmailPostForm(forms.Form):
     #An instance of EmailField we use the email of recipient , who will recieve email recommending post recommendation
     Comments  =  forms.CharField(required=False,widget=forms.Textarea)
     #An instance of  CharField we use  it  for comments  to include in  post recommendation email
+    
+    
+class CommentForm(forms.ModelForm):
+    class  Meta:
+        model = Comment
+        fields  = ['name','email','body']
+        #creating a form to let users comment on blog posts

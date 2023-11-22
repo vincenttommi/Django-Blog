@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post,Comment
 
 # Register your models here.
 
@@ -19,3 +19,12 @@ the model on the site and how to interact with it
     date_hierarchy  = 'publish'
     ordering  = ['status','publish']
     
+    
+
+#adding comments  to administration site to manage comments through simple interface
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+     list_display  = ['name','email','created','active']
+     list_filter  = ['active','created','updated']
+     search_fields = ['name','email','body']
+         
